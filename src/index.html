@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- The name appears here, in .brand below, in cards.js (BRAND) and on the thank-you slide in app.js. -->
+<title>Steam Damage: how much have you spent on Steam?</title>
+<link rel="canonical" href="https://steamdamage.com/">
+<meta name="description" content="How much have you spent on Steam? Paste your purchase history and get a shareable recap, game by game. Free, no login, and nothing leaves your browser.">
+<!-- Link previews (Discord, Reddit, X, messages). The image is made by tools/og-image.html. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Steam Damage">
+<meta property="og:url" content="https://steamdamage.com/">
+<meta property="og:title" content="How much have you actually spent on Steam?">
+<meta property="og:description" content="Paste your Steam purchase history and see where the money went, game by game. Free, no login, nothing leaves your browser.">
+<meta property="og:image" content="https://steamdamage.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A sample Steam Damage receipt showing a lifetime Steam total split into games, microtransactions and refunds.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#151514">
+<!-- Icon: a red stamp on a receipt. PNG/ICO versions are made from favicon.svg by tools/make-icons.js. -->
+<link rel="icon" href="favicon.ico" sizes="16x16 32x32 48x48">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body data-screen="start">
+<header class="top">
+  <!-- The logo: the name stamped on a receipt (same idea as the tab icon, favicon.svg). -->
+  <span class="brand"><span class="logo" role="img" aria-label="Steam Damage"><i class="ln ln-top"></i><span class="logo-stamp">STEAM DAMAGE</span><i class="ln ln-bot"></i></span></span>
+  <div class="top-right">
+    <!-- Up here, away from the card arrows, so nobody restarts by accident. Hidden on the start screen. -->
+    <button id="restart" class="restart" data-act="again" aria-label="Start over" hidden>↺<span class="restart-label"> Start over</span></button>
+    <label class="currency">
+      <span class="sr">Show amounts in</span>
+      <select id="currency" aria-label="Show amounts in"></select>
+    </label>
+  </div>
+</header>
+
+<main>
+  <!-- 1. Safety note, paste box, then instructions and questions -->
+  <section id="start" class="screen">
+    <!-- Shown on touch-only devices. A warning, not a block: detection can be wrong, so they can carry on. -->
+    <div id="phone-note" class="phone-note" hidden>
+      <p><b>This works best on a computer.</b> Copying your history from Steam doesn't work well on a phone or tablet. Send yourself the link and open it on your computer.</p>
+      <div class="actions">
+        <button class="primary" id="send-link">Send me the link</button>
+        <button class="ghost" id="phone-dismiss">Try here anyway</button>
+      </div>
+    </div>
+    <!-- On wide screens the hero is two columns: everything up to the paste box, and the sample cards. -->
+    <div class="hero">
+    <div class="hero-main">
+    <h1>How much have you <em>actually</em> spent on Steam?</h1>
+    <p class="lede">Paste your purchase history and see your total, what each game cost you, and how much went on microtransactions. You get a set of cards to share at the end.</p>
+
+    <!-- Safety first: it's the main worry before pasting. Kept short; the details open on tap. -->
+    <section class="safe" aria-labelledby="safe-title">
+      <h2 id="safe-title" class="sr">Is this safe to use?</h2>
+      <p><b>Your history never leaves this tab.</b> Nothing is sent to us or anyone else, and you don't log in here. If any page other than Steam asks for your Steam password, close it.</p>
+      <details>
+        <summary>How can I check?</summary>
+        <p>Copy your history from Steam, turn off your Wi-Fi, then paste it here. It still works, because nothing needs to go anywhere. On a computer you can also press <kbd>F12</kbd>, open the <b>Network</b> tab and paste: nothing gets sent.</p>
+        <p>If you can read code, the whole site is <a href="https://github.com/tylrae/steam-damage" target="_blank" rel="noopener noreferrer">on GitHub</a>. Those are the exact files this page runs, with no build step in between.</p>
+      </details>
+      <details>
+        <summary>What ends up on my cards?</summary>
+        <p>Copying the whole page also picks up your account details, wallet balance, how you paid and who you sent gifts to. This page ignores all of that. Your cards show game names, amounts and dates, and only leave your computer if you share them.</p>
+      </details>
+    </section>
+
+    <!-- The box comes before the steps so returning visitors can paste straight away. -->
+    <label class="drop" id="drop">
+      <textarea id="paste" spellcheck="false" autocomplete="off" aria-label="Paste your Steam purchase history here"></textarea>
+      <span class="drop-hint" aria-hidden="true">
+        <svg class="clip" width="30" height="36" viewBox="0 0 30 36"><rect x="2" y="5" width="26" height="29" rx="4" fill="none" stroke="currentColor" stroke-width="2.5"/><rect x="9" y="1.5" width="12" height="7" rx="2" fill="var(--bg)" stroke="currentColor" stroke-width="2.5"/><path d="M8 17h14M8 23h14M8 29h8" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+        <b>Paste your Steam history here</b>
+        <span class="drop-keys"><span class="key mod">Ctrl</span>+<span class="key">V</span></span>
+        <small>Click the box first, or paste anywhere on this page</small>
+      </span>
+    </label>
+
+    <p class="alt">Already in a spreadsheet? Save it as .csv and
+      <label class="link">open the file<input type="file" id="file" accept=".csv,.tsv,.txt,.html,.htm"></label>.</p>
+    </div>
+
+    <!-- A taste of the result, drawn from made-up numbers by app.js, so people see the payoff first. -->
+    <figure class="peek" id="peek">
+      <div class="fan" aria-hidden="true"></div>
+      <figcaption>What you'll get <span aria-hidden="true">↓</span><small>Example cards, made-up numbers</small></figcaption>
+    </figure>
+    </div>
+
+    <h2 class="steps-title">How to get your history</h2>
+    <ol class="receipt steps">
+      <li>
+        <span class="n">01</span>
+        <div>
+          <b>Open your purchase history on Steam</b>
+          <p>Sign in to Steam in your browser (not the Steam app), then open:</p>
+          <a class="addr" href="https://store.steampowered.com/account/history" target="_blank" rel="noopener noreferrer">
+            <svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><rect x="1" y="6" width="10" height="7.5" rx="1.5" fill="#2f7d4f"/><path d="M3.2 6V4.2a2.8 2.8 0 0 1 5.6 0V6" fill="none" stroke="#2f7d4f" stroke-width="1.6"/></svg>
+            <span>store.steampowered.com/account/history</span><span class="go" aria-hidden="true">↗</span>
+          </a>
+          <p class="quip">Yes, Steam keeps every receipt. Every single one.</p>
+        </div>
+      </li>
+      <li>
+        <span class="n">02</span>
+        <div>
+          <b>Load all of it</b>
+          <p>Scroll to the very bottom of the list (<kbd class="end-key">End</kbd> jumps there) and click this button until it's gone:</p>
+          <span class="steam-btn">Load More Transactions</span>
+          <span class="steam-btn-note">Steam's button, pictured. Not part of this site.</span>
+          <p class="quip">Long history? Settle in. We'll wait.</p>
+        </div>
+      </li>
+      <li>
+        <span class="n">03</span>
+        <div>
+          <b>Copy the whole page</b>
+          <p class="keys" aria-label="Press Control A, then Control C"><span class="key mod">Ctrl</span>+<span class="key">A</span><span class="then">then</span><span class="key mod">Ctrl</span>+<span class="key">C</span></p>
+          <p>Menus and all is fine. Only the table gets read.</p>
+        </div>
+      </li>
+      <li>
+        <span class="n">04</span>
+        <div>
+          <b>Come back and paste it anywhere here</b>
+          <p class="keys" aria-label="Press Control V"><span class="key mod">Ctrl</span>+<span class="key">V</span></p>
+          <p class="quip">Brace yourself.</p>
+        </div>
+      </li>
+    </ol>
+
+    <section class="faq" aria-labelledby="faq-title">
+      <h2 id="faq-title">FAQ</h2>
+      <details>
+        <summary>How do I see how much I've spent on Steam?</summary>
+        <p>Steam has a page called "External Funds Used" (Help → Steam Support → My Account → Data Related to Your Steam Account) that shows one lifetime number. This site uses your purchase history instead, so you can see which games the money went to, how much was microtransactions, what you bought on sale, and more. <a href="/how-much-have-i-spent-on-steam">Full guide&nbsp;→</a></p>
+      </details>
+      <details>
+        <summary>Why doesn't my total match Steam's number?</summary>
+        <p>Steam counts money coming into your account, including wallet top-ups. We add up what you actually bought, take off refunds, and convert other currencies at that year's average exchange rate. The two numbers are usually close, but rarely the same.</p>
+      </details>
+      <details>
+        <summary>Does it work on my phone?</summary>
+        <p>Not well. Copying your history from Steam is much easier on a computer, so start there.</p>
+      </details>
+      <details>
+        <summary>Is it free?</summary>
+        <p>Yes, every feature. There are no ads, and the site runs on donations.</p>
+      </details>
+      <details>
+        <summary>How can I support the site?</summary>
+        <p>Sharing your cards helps a lot, since that's how most people find it. If you'd like to chip in, tips go through <a href="https://ko-fi.com/tylrae" target="_blank" rel="noopener noreferrer">Ko-fi&nbsp;↗</a> and help pay for the domain and the time it takes to keep the site working when Steam changes its pages.</p>
+      </details>
+      <details>
+        <summary>Something's not working. How do I tell you?</summary>
+        <p><a href="https://github.com/tylrae/steam-damage/issues/new?template=problem.yml" target="_blank" rel="noopener noreferrer">Report it on GitHub&nbsp;↗</a> (you'll need a free account). Say what went wrong, which browser you used and your Steam currency. Please don't paste your purchase history there, as it's public: a description, or a screenshot with the amounts covered, is plenty.</p>
+      </details>
+      <details>
+        <summary>Is this made by Valve?</summary>
+        <p>No. It's a fan-made site, not connected to Valve or Steam.</p>
+      </details>
+    </section>
+
+  </section>
+
+  <!-- 2. What we found / what went wrong. Filled in by app.js -->
+  <section id="check" class="screen" hidden aria-live="polite"></section>
+
+  <!-- 3. The cards: a slideshow of canvases, each one saveable as a phone-story image -->
+  <section id="cards" class="screen" hidden></section>
+</main>
+
+<footer>
+  <p>Your purchase history is read inside this tab and never sent anywhere. No account, no uploads.</p>
+  <!-- Always-there tip link for people who come back just to support. Same link as KOFI_URL in app.js. -->
+  <p>Free with no ads, and runs on donations. <a href="https://ko-fi.com/tylrae" target="_blank" rel="noopener noreferrer">Support this site on Ko-fi&nbsp;↗</a></p>
+  <!-- Reports go to the public GitHub repo (issue form in .github/ISSUE_TEMPLATE), so no email address is exposed. -->
+  <p>Something not right? <a href="https://github.com/tylrae/steam-damage/issues/new?template=problem.yml" target="_blank" rel="noopener noreferrer">Report a problem&nbsp;↗</a></p>
+  <p><b>Fan-made. Not affiliated with Valve or Steam.</b> Not endorsed by or connected to Valve Corporation. Steam and the Steam logo are trademarks of Valve Corporation.</p>
+  <p>© 2026 Steam Damage · <a href="https://github.com/tylrae/steam-damage" target="_blank" rel="noopener noreferrer">Source code</a> licensed under AGPL-3.0</p>
+</footer>
+
+<script src="parser.js"></script>
+<script src="rates.js"></script>
+<script src="cards.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

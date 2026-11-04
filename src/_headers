@@ -1,0 +1,8 @@
+# Security headers for every page, read by Cloudflare when it serves src/ (this file isn't served itself).
+# The Content-Security-Policy makes the browser enforce the privacy promise: scripts, styles and images
+# may only come from this site, and the page can't connect anywhere (connect-src 'none').
+# blob: is for the saved/copied card image; data: is a safety net for small inline images.
+/*
+  Content-Security-Policy: default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; manifest-src 'self'; connect-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
+  Referrer-Policy: no-referrer
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()

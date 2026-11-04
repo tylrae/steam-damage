@@ -1,0 +1,8 @@
+// Cloudflare deploy settings. The site is plain files served from src/, with no Worker code.
+{
+  "name": "steamdamage",
+  "compatibility_date": "2026-11-01",
+  "assets": {
+    "directory": "./src"
+  }
+}

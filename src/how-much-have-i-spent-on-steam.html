@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- A plain guide page for people searching the question. No scripts. Listed in sitemap.xml and linked from the FAQ. -->
+<title>How much have I spent on Steam? Three ways to check | Steam Damage</title>
+<link rel="canonical" href="https://steamdamage.com/how-much-have-i-spent-on-steam">
+<meta name="description" content="Steam can show you one lifetime number, or every purchase you've made. Here's how to find both, why they rarely match, and how to see it game by game.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Steam Damage">
+<meta property="og:url" content="https://steamdamage.com/how-much-have-i-spent-on-steam">
+<meta property="og:title" content="How much have I spent on Steam?">
+<meta property="og:description" content="Three ways to check, and why Steam's own number rarely matches your purchase history.">
+<meta property="og:image" content="https://steamdamage.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A sample Steam Damage receipt showing a lifetime Steam total split into games, microtransactions and refunds.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#151514">
+<link rel="icon" href="favicon.ico" sizes="16x16 32x32 48x48">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="/"><span class="logo" role="img" aria-label="Steam Damage home"><i class="ln ln-top"></i><span class="logo-stamp">STEAM DAMAGE</span><i class="ln ln-bot"></i></span></a>
+</header>
+
+<main class="guide">
+  <h1>How much have I spent on Steam?</h1>
+  <p class="lede">Steam can tell you, but it splits the answer in two. There's one lifetime number hidden in the support pages, and there's your full purchase history, which lists everything but never adds it up. Here's how to find both, and how to get the breakdown neither of them gives you.</p>
+
+  <nav class="toc" aria-label="On this page">
+    <a href="#steam-total">1. Steam's lifetime number</a>
+    <a href="#history">2. Your purchase history</a>
+    <a href="#breakdown">3. Game by game, with Steam Damage</a>
+    <a href="#match">Why the numbers don't match</a>
+  </nav>
+
+  <section class="receipt" id="steam-total">
+    <h2>1. Steam's lifetime number</h2>
+    <p>The quickest answer. Steam keeps a running total of the money that has come into your account from outside, such as card and PayPal payments.</p>
+    <ol>
+      <li>Sign in to Steam, either in the Steam app or at <b>help.steampowered.com</b> in a browser.</li>
+      <li>Go to <b>Help → Steam Support → My Account → Data Related to Your Steam Account</b>.</li>
+      <li>Open <b>External Funds Used</b>. Steam may ask you to sign in again.</li>
+    </ol>
+    <p>The figure you want is <b>TotalSpend</b>. You'll also see <b>OldSpend</b>, which is the part from before 17 April 2015. Your lifetime total is TotalSpend.</p>
+    <p class="note">Good for a single number. It won't tell you which games the money went to, and it counts a few things you might not expect (see <a href="#match">why the numbers don't match</a>).</p>
+  </section>
+
+  <section class="receipt" id="history">
+    <h2>2. Your purchase history</h2>
+    <p>Every purchase, refund, gift and Market trade you've ever made, one row each. Open it in a browser while signed in:</p>
+    <p><a href="https://store.steampowered.com/account/history" target="_blank" rel="noopener noreferrer">store.steampowered.com/account/history&nbsp;↗</a></p>
+    <p>It loads a page at a time, so scroll to the bottom and click <b>Load More Transactions</b> until the button disappears. That can take a while if you've had the account for years.</p>
+    <p class="note">The detail is all there, but Steam doesn't total it, sort it by game, or separate in-game purchases from games. Adding it up by hand is a long job, especially if you've paid in more than one currency.</p>
+  </section>
+
+  <section class="receipt" id="breakdown">
+    <h2>3. Game by game, with Steam Damage</h2>
+    <p>This site does the adding up for you. Copy your purchase history page (<kbd>Ctrl</kbd>+<kbd>A</kbd>, then <kbd>Ctrl</kbd>+<kbd>C</kbd>), paste it on the home page, and you get:</p>
+    <ul>
+      <li>your total after refunds, converted into one currency</li>
+      <li>the games that took the most money</li>
+      <li>how much went on in-game purchases and microtransactions</li>
+      <li>what you bought on sale and what you paid full price for</li>
+      <li>gifts, refunds and Community Market trades, kept separate</li>
+    </ul>
+    <p>It all happens inside your browser tab. Nothing is uploaded, and there's no sign-in. The results come as a set of receipt-style cards you can save or share.</p>
+    <p><a class="cta" href="/">Check my Steam damage →</a></p>
+  </section>
+
+  <section class="receipt" id="match">
+    <h2>Why the numbers don't match</h2>
+    <p>If you try more than one method, you'll get different totals. That's normal. The main reasons:</p>
+    <dl class="reasons">
+      <dt>Wallet top-ups</dt>
+      <dd>Steam's TotalSpend counts money when it goes into your wallet, even if you haven't spent it yet. A purchase total only counts it once you buy something.</dd>
+      <dt>Refunds</dt>
+      <dd>TotalSpend doesn't take refunds off. Your purchase history shows them, and Steam Damage subtracts them from the game they belong to.</dd>
+      <dt>Community Market money</dt>
+      <dd>If you sold items on the Market and spent that wallet money on games, those games never show up in TotalSpend, because the money didn't come from outside. Your purchase history still lists them.</dd>
+      <dt>Currencies</dt>
+      <dd>If you've moved country or bought in other currencies, each method converts them differently. Steam Damage uses the average exchange rate for the year of each purchase.</dd>
+      <dt>Gifts and gift cards</dt>
+      <dd>Gifts you sent count as your spending. Steam gift cards you bought for someone else don't, because they aren't a game you bought.</dd>
+    </dl>
+    <p class="note">Rule of thumb: TotalSpend is roughly what has left your bank account for Steam. A purchase total is what you've actually bought. For most people they land close together.</p>
+  </section>
+
+  <section class="faq" aria-labelledby="faq-title">
+    <h2 id="faq-title">Quick answers</h2>
+    <details>
+      <summary>Can I see my Steam spending on my phone?</summary>
+      <p>The External Funds Used page works in a phone browser. Copying the whole purchase history is much easier on a computer, so use one for a game-by-game breakdown.</p>
+    </details>
+    <details>
+      <summary>Does Steam show how much I've spent on one game?</summary>
+      <p>Not directly. Search your purchase history for the game's name and add up the rows, or paste the history into Steam Damage, which totals every game for you, including its in-game purchases.</p>
+    </details>
+    <details>
+      <summary>Is it safe to paste my purchase history into a website?</summary>
+      <p>Be careful with sites that ask you to sign in to Steam or upload a file to their server. Steam Damage needs neither: it reads the text inside your browser and sends nothing anywhere. The <a href="https://github.com/tylrae/steam-damage" target="_blank" rel="noopener noreferrer">source code is public&nbsp;↗</a> if you want to check.</p>
+    </details>
+  </section>
+</main>
+
+<footer>
+  <p>Free with no ads, and runs on donations. <a href="https://ko-fi.com/tylrae" target="_blank" rel="noopener noreferrer">Support this site on Ko-fi&nbsp;↗</a></p>
+  <p><b>Fan-made. Not affiliated with Valve or Steam.</b> Not endorsed by or connected to Valve Corporation. Steam and the Steam logo are trademarks of Valve Corporation.</p>
+  <p>© 2026 Steam Damage · <a href="https://github.com/tylrae/steam-damage" target="_blank" rel="noopener noreferrer">Source code</a> licensed under AGPL-3.0</p>
+</footer>
+</body>
+</html>

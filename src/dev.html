@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Parser Bench</title>
+<style>
+  :root { color-scheme: light dark; --bg: #fafafa; --fg: #1a1a1a; --muted: #666; --line: #ddd; --card: #fff; --warn: #9a5b00; --warn-bg: #fff4e0; --accent: #2a6df4; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #141414; --fg: #eaeaea; --muted: #999; --line: #333; --card: #1d1d1d; --warn: #ffb648; --warn-bg: #2e2412; --accent: #6f9dff; }
+  }
+  body { margin: 0; padding: 24px 16px 64px; background: var(--bg); color: var(--fg); font: 14px/1.45 system-ui, sans-serif; }
+  main { max-width: 1100px; margin: 0 auto; }
+  h1 { font-size: 20px; margin: 0 0 4px; }
+  h2 { font-size: 15px; margin: 28px 0 8px; }
+  p.lede { color: var(--muted); margin: 0 0 16px; }
+  textarea { width: 100%; box-sizing: border-box; height: 140px; font: 12px ui-monospace, monospace; padding: 10px; border: 2px dashed var(--line); border-radius: 8px; background: var(--card); color: var(--fg); }
+  textarea:focus { outline: none; border-color: var(--accent); }
+  .bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 10px 0; }
+  button, label.file { font: inherit; padding: 6px 12px; border: 1px solid var(--line); border-radius: 6px; background: var(--card); color: var(--fg); cursor: pointer; }
+  button:disabled { opacity: .45; cursor: default; }
+  label.file input { display: none; }
+  .meta { color: var(--muted); }
+  .warn { background: var(--warn-bg); color: var(--warn); padding: 8px 12px; border-radius: 6px; margin: 6px 0; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; }
+  .stat { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+  .stat b { display: block; font-size: 18px; }
+  .stat span { color: var(--muted); font-size: 12px; }
+  .scroll { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; background: var(--card); font-size: 13px; }
+  th, td { text-align: left; padding: 5px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { position: sticky; top: 0; background: var(--card); }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  tr.k-skip td, tr.k-unknown td { color: var(--muted); }
+  tr.k-unknown td:first-child { color: var(--warn); }
+  select { font: inherit; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Parser bench</h1>
+  <p class="lede">Developer tool, not the real site. Open store.steampowered.com/account/history, click "Load More Transactions" until it's gone, press Ctrl+A then Ctrl+C, click the box below and press Ctrl+V. Nothing leaves this page.</p>
+
+  <textarea id="paste" placeholder="Paste here (Ctrl+V)…"></textarea>
+  <div class="bar">
+    <button id="reparse" title="Re-read whatever is in the box as plain text">Analyse box as text</button>
+    <label class="file">Open file… <input id="file" type="file" accept=".html,.htm,.txt,.tsv,.csv"></label>
+    <button id="saveHtml" disabled>Save paste as .html</button>
+    <button id="saveText" disabled>Save paste as .txt</button>
+    <span id="clip" class="meta"></span>
+  </div>
+
+  <div id="out"></div>
+</main>
+
+<script src="parser.js"></script>
+<script src="dev.js"></script>
+</body>
+</html>

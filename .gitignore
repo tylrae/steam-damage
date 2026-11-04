@@ -1,0 +1,10 @@
+# Personal Steam Account History exports — never commit
+test-data/
+
+node_modules/
+dist/
+.DS_Store
+
+# Private working notes, kept locally
+CONTEXT.md
+docs/

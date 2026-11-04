@@ -1,0 +1,376 @@
+/* Shop-receipt look: paper cards on an ink background. System fonts only, so the page makes no
+   network requests. */
+:root {
+  --bg: #ecebe6;
+  --ink: #1d1c1a;
+  --muted: #6b6860;
+  --paper: #fffdf7;
+  --paper-ink: #1d1c1a;
+  --paper-muted: #77736a;
+  --rule: #cfcabd;
+  --accent: #d6452f;
+  --accent-ink: #ffffff;
+  --ok: #2f7d4f;
+  --warn: #9a5b00;
+  --warn-bg: #fff2d9;
+  --focus: #2a6df4;
+  --mono: ui-monospace, "Cascadia Mono", "SF Mono", Consolas, Menlo, monospace;
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #151514;
+    --ink: #efede6;
+    --muted: #9d998f;
+    --paper: #f6f2e7;
+    --rule: #cbc5b6;
+    --accent: #ef5a42;
+    --focus: #7ea6ff;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #151514;
+  --ink: #efede6;
+  --muted: #9d998f;
+  --paper: #f6f2e7;
+  --rule: #cbc5b6;
+  --accent: #ef5a42;
+  --focus: #7ea6ff;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  /* A faint warm glow at the top, so wide screens aren't one flat dark field. */
+  background: radial-gradient(ellipse 70% 420px at 50% 0, color-mix(in srgb, var(--accent) 9%, transparent), transparent 75%) no-repeat, var(--bg);
+  color: var(--ink);
+  font: 16px/1.5 var(--sans);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+main { flex: 1; width: 100%; max-width: 560px; margin: 0 auto; padding: 8px 16px 48px; }
+/* Wide screens: the start page widens so the sample cards can sit beside the hero. */
+@media (min-width: 1000px) {
+  body[data-screen="start"] main, body[data-screen="start"] .top { max-width: 1000px; }
+  body[data-screen="start"] #start > :not(.hero) { max-width: 528px; }
+  .hero { display: grid; grid-template-columns: minmax(0, 528px) 1fr; gap: 56px; align-items: center; }
+}
+.peek { margin: 28px 0 0; text-align: center; }
+.fan { position: relative; height: 300px; }
+.fan canvas { position: absolute; left: 50%; top: 10px; width: 150px; height: auto; border-radius: 10px; box-shadow: 0 14px 30px rgba(0, 0, 0, .35); transition: transform .35s cubic-bezier(.2, .7, .2, 1); }
+.fan canvas:nth-child(1) { transform: translateX(-95%) rotate(-10deg) translateY(18px); }
+.fan canvas:nth-child(2) { transform: translateX(-50%); z-index: 1; }
+.fan canvas:nth-child(3) { transform: translateX(-5%) rotate(10deg) translateY(18px); }
+.peek:hover .fan canvas:nth-child(1) { transform: translateX(-104%) rotate(-13deg) translateY(22px); }
+.peek:hover .fan canvas:nth-child(2) { transform: translateX(-50%) translateY(-8px); }
+.peek:hover .fan canvas:nth-child(3) { transform: translateX(4%) rotate(13deg) translateY(22px); }
+.peek figcaption { margin-top: 8px; font: 700 14px var(--mono); letter-spacing: .06em; text-transform: uppercase; }
+.peek figcaption small { display: block; font: 400 12px var(--sans); letter-spacing: 0; text-transform: none; color: var(--muted); margin-top: 2px; }
+@media (min-width: 1000px) {
+  .peek { margin: 0; }
+  .fan { height: 420px; }
+  .fan canvas { width: 190px; }
+  .peek figcaption span { display: inline-block; transform: rotate(90deg); } /* points back at the paste box */
+}
+@media (prefers-reduced-motion: reduce) { .fan canvas { transition: none; } }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+[hidden] { display: none !important; }
+
+/* header / footer */
+.top { display: flex; justify-content: space-between; align-items: center; gap: 12px; max-width: 560px; width: 100%; margin: 0 auto; padding: 16px; }
+.top-right { display: flex; align-items: center; gap: 8px; }
+.restart { font: 600 14px var(--mono); color: var(--ink); background: transparent; border: 1px solid var(--muted); border-radius: 999px; padding: 5px 10px; white-space: nowrap; }
+/* Phones: icon only, so the header never pushes the currency menu off screen. */
+@media (max-width: 440px) { .restart-label { display: none; } .restart { padding: 5px 11px; } }
+.brand { display: flex; flex: none; }
+/* The logo: "STEAM DAMAGE" as a rubber stamp on a torn receipt, with two printed lines tucked into
+   the corners the tilt leaves empty. Fixed colours: it's paper in both themes. */
+.logo { position: relative; display: inline-block; padding: 7px 14px 12px; background: #fffdf7; line-height: 1;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 5px), 95% 100%, 90% calc(100% - 5px), 85% 100%, 80% calc(100% - 5px), 75% 100%, 70% calc(100% - 5px), 65% 100%, 60% calc(100% - 5px), 55% 100%, 50% calc(100% - 5px), 45% 100%, 40% calc(100% - 5px), 35% 100%, 30% calc(100% - 5px), 25% 100%, 20% calc(100% - 5px), 15% 100%, 10% calc(100% - 5px), 5% 100%, 0 calc(100% - 5px)); }
+.logo .ln { position: absolute; height: 2px; background: #cfcabd; border-radius: 1px; }
+.logo .ln-top { left: 14px; top: 4px; width: 38%; }
+.logo .ln-bot { right: 14px; bottom: 8px; width: 44%; }
+.logo-stamp { display: block; position: relative; font: 800 16px var(--mono); letter-spacing: .12em; color: #d6452f; border: 2.5px solid #d6452f; outline: 1px solid #d6452f; outline-offset: 2px; border-radius: 3px; padding: 4px 9px 3px; white-space: nowrap; transform: rotate(-4deg); }
+/* Small phones: shrink it a touch so the header stays on one line. */
+@media (max-width: 400px) { .logo { padding: 6px 10px 11px; } .logo-stamp { font-size: 13px; letter-spacing: .08em; padding: 3px 7px 2px; } }
+.badge { display: inline-block; font-size: 12px; color: var(--muted); border: 1px solid currentColor; border-radius: 999px; padding: 2px 10px; white-space: nowrap; margin-top: 8px; }
+.currency select {
+  font: 600 14px var(--mono);
+  color: var(--ink);
+  background: transparent;
+  border: 1px solid var(--muted);
+  border-radius: 999px;
+  padding: 5px 10px;
+  cursor: pointer;
+  max-width: 150px;
+}
+.currency select option { color: #1d1c1a; background: #fff; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+footer { max-width: 560px; margin: 0 auto; padding: 24px 16px 32px; color: var(--muted); font-size: 12px; text-align: center; }
+footer p { margin: 4px 0; }
+footer a { color: var(--ink); }
+
+/* intro */
+h1 { font-size: clamp(28px, 7vw, 40px); line-height: 1.1; margin: 16px 0 12px; letter-spacing: -.01em; }
+h1 em { font-style: normal; color: var(--accent); }
+.lede { color: var(--muted); margin: 0 0 24px; }
+
+/* the receipt card */
+.receipt {
+  position: relative;
+  background: var(--paper);
+  color: var(--paper-ink);
+  padding: 20px 20px 28px;
+  margin: 0 0 20px;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, .04), 0 10px 30px rgba(0, 0, 0, .12);
+  /* torn zig-zag bottom edge */
+  -webkit-mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 16px 100%;
+          mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 16px 100%;
+}
+.receipt a { color: var(--accent); font-weight: 600; word-break: break-word; }
+
+/* The steps sit on cream paper in both themes, so their reds are fixed rather than theme colours. */
+.steps { list-style: none; }
+.steps li { display: grid; grid-template-columns: 52px 1fr; gap: 6px 10px; padding: 18px 0; border-bottom: 1px dashed var(--rule); }
+.steps li:first-child { padding-top: 4px; }
+.steps li:last-child { border-bottom: 0; padding-bottom: 4px; }
+/* Step numbers as little rubber stamps, like the logo and the badges. */
+.steps .n { align-self: start; justify-self: start; margin-top: 1px; font: 800 15px var(--mono); color: #c63f2b; border: 2px solid #c63f2b; outline: 1px solid #c63f2b; outline-offset: 2px; border-radius: 3px; padding: 1px 6px; transform: rotate(-7deg); opacity: .9; }
+.steps li:nth-child(even) .n { transform: rotate(5deg); }
+.steps li > div { min-width: 0; } /* lets the address bar shrink on narrow phones instead of pushing the step wider */
+.steps b { display: block; font-size: 17px; }
+.steps p { margin: 4px 0 0; color: var(--paper-muted); font-size: 15px; }
+.steps .quip { font: 600 13px var(--mono); color: #c63f2b; margin-top: 8px; }
+/* Step 1: a mini browser address bar; the whole bar is the link. */
+.receipt a.addr { display: flex; align-items: center; gap: 8px; margin: 10px 0 2px; padding: 8px 12px; background: #fff; border: 1px solid var(--rule); border-radius: 999px; font: 600 13px var(--mono); color: var(--paper-ink); text-decoration: none; word-break: normal; box-shadow: 0 1px 0 rgba(0, 0, 0, .05); }
+.receipt a.addr:hover span:first-of-type { text-decoration: underline; }
+.addr svg { flex: none; }
+.addr span:first-of-type { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.addr .go { margin-left: auto; color: #c63f2b; flex: none; }
+/* Steps 3 and 4: big keyboard keys. */
+.steps .keys { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; margin: 12px 0 2px; font: 700 14px var(--mono); color: var(--paper-muted); }
+.key { display: inline-grid; place-items: center; min-width: 40px; height: 40px; padding: 0 10px; background: #fff; color: var(--paper-ink); border: 1px solid var(--rule); border-bottom-width: 4px; border-radius: 7px; font: 700 15px var(--mono); }
+.keys .then { margin: 0 6px; font-family: var(--sans); font-weight: 400; }
+kbd {
+  font: 600 12px var(--mono);
+  color: var(--paper-ink);
+  background: #fff;
+  border: 1px solid var(--rule);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  padding: 1px 6px;
+  white-space: nowrap;
+}
+
+/* paste target: a real textarea (so phones offer "Paste") with the hint drawn behind it */
+.drop {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 150px;
+  border: 2px dashed var(--muted);
+  border-radius: 12px;
+  cursor: text;
+  transition: border-color .15s, background-color .15s;
+}
+.drop:hover, .drop.over, .drop:focus-within { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 6%, transparent); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 14%, transparent), 0 0 40px color-mix(in srgb, var(--accent) 22%, transparent); }
+.drop textarea {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  resize: none; border: 0; border-radius: 12px; background: transparent;
+  color: transparent; caret-color: var(--accent); font-size: 16px; padding: 16px;
+}
+.drop textarea:focus { outline: none; }
+.drop-hint { pointer-events: none; text-align: center; padding: 16px; }
+.drop-hint b { display: block; font-size: 19px; margin-top: 6px; }
+.drop-hint small { display: block; color: var(--muted); font-size: 13px; margin-top: 8px; }
+.drop-hint .clip { display: block; margin: 0 auto; color: var(--accent); }
+.drop-keys { display: inline-flex; align-items: center; gap: 6px; margin-top: 10px; font: 700 14px var(--mono); color: var(--muted); }
+.drop-keys .key { min-width: 36px; height: 36px; font-size: 14px; }
+.drop.busy .drop-hint b::after { content: " …"; }
+
+.alt { font-size: 14px; color: var(--muted); text-align: center; margin: 16px 0 0; }
+.link { text-decoration: underline; cursor: pointer; color: var(--ink); }
+.link input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.link:focus-within { outline: 3px solid var(--focus); outline-offset: 2px; }
+.steps-title { font-size: 19px; margin: 36px 0 12px; }
+
+/* check screen */
+.stamp {
+  display: inline-block;
+  font: 800 13px var(--mono);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  border: 2px solid currentColor;
+  border-radius: 4px;
+  padding: 2px 8px;
+  transform: rotate(-3deg);
+  margin: 0 0 12px;
+}
+.stamp.ok { color: var(--ok); }
+.stamp.bad { color: var(--accent); }
+.receipt h2 { font-size: 22px; line-height: 1.2; margin: 0 0 8px; }
+.receipt p { margin: 8px 0; }
+.lines { font: 14px/1.4 var(--mono); margin: 16px 0 0; padding: 12px 0 0; border-top: 1px dashed var(--rule); }
+.lines div { display: flex; align-items: baseline; gap: 10px; padding: 3px 0; }
+.lines div::after { content: ''; flex: 1; order: 1; border-bottom: 2px dotted var(--rule); transform: translateY(-4px); } /* till-receipt dot leaders */
+.lines dd { order: 2; }
+.lines dt { color: var(--paper-muted); }
+.lines dd { margin: 0; text-align: right; font-weight: 600; }
+.lines .total { border-top: 1px dashed var(--rule); margin-top: 8px; padding-top: 10px; font-size: 16px; }
+
+.issue { background: var(--warn-bg); color: var(--warn); border-radius: 8px; padding: 10px 12px; margin: 12px 0 0; font-size: 14px; }
+.issue b { display: block; color: var(--paper-ink); }
+.fix { margin: 12px 0 0; padding-left: 20px; color: var(--paper-muted); }
+.fix li { margin: 4px 0; }
+
+.actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; }
+button {
+  font: 600 16px var(--sans);
+  border-radius: 999px;
+  padding: 12px 22px;
+  cursor: pointer;
+  border: 2px solid transparent;
+}
+button.primary { background: var(--accent); color: var(--accent-ink); }
+button.ghost { background: transparent; color: var(--ink); border-color: var(--muted); }
+button:active { transform: translateY(1px); }
+.note { font-size: 13px; color: var(--muted); }
+
+/* Phone warning at the top of the start screen. */
+.phone-note { margin: 0 0 20px; padding: 14px 16px; border-radius: 12px; background: var(--warn-bg); color: #3a2a00; }
+.phone-note p { margin: 0 0 12px; font-size: 15px; }
+.phone-note b { color: #1d1c1a; }
+.phone-note button.ghost { color: #3a2a00; border-color: #9a5b00; }
+
+/* cards: one canvas per card, sized to fit the screen at 9:16 */
+.deck { width: min(100%, calc((100vh - 240px) * 9 / 16)); width: min(100%, calc((100svh - 240px) * 9 / 16)); min-width: 240px; margin: 0 auto; }
+.progress { display: flex; gap: 6px; margin: 0 0 10px; }
+.progress span { flex: 1; height: 4px; border-radius: 2px; transition: background-color .25s; background: color-mix(in srgb, var(--muted) 35%, transparent); }
+.progress span.on { background: var(--ink); }
+.stage { position: relative; touch-action: pan-y; cursor: pointer; user-select: none; -webkit-user-select: none; }
+/* The outgoing slide sits on top of the incoming one while it slides away. */
+.stage .leaving { position: absolute; inset: 0; width: 100%; pointer-events: none; }
+.stage canvas { display: block; width: 100%; height: auto; border-radius: 14px; box-shadow: 0 10px 30px rgba(0, 0, 0, .18); }
+.deck-actions { justify-content: center; margin-top: 16px; }
+.deck-actions button[disabled] { opacity: .35; cursor: default; }
+.copy-note { text-align: center; min-height: 1.4em; margin: 8px 0 0; color: var(--ink); }
+.copy-note:empty { display: none; }
+.deck-note { text-align: center; }
+.text-btn { font: inherit; color: var(--ink); background: none; border: 0; padding: 0; text-decoration: underline; border-radius: 0; }
+
+/* Steam's "Load More Transactions" button, redrawn so people recognise it. Not clickable here. */
+/* It copies Steam's look on purpose so people spot the real button; the note says it's only a picture. */
+.steam-btn-note { display: block; margin: 0 0 4px; font-size: 12px; color: var(--paper-muted); }
+.steam-btn {
+  display: block;
+  max-width: 320px;
+  margin: 10px 0 2px;
+  padding: 8px 12px;
+  border-radius: 2px;
+  background: linear-gradient(to bottom, #31506a, #27435a);
+  color: #66c0f4;
+  font: 13px/1.4 Arial, Helvetica, sans-serif;
+  text-align: center;
+  text-transform: uppercase;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Headings get focus from code so screen readers announce the new screen; no ring needed. */
+h2[tabindex="-1"]:focus { outline: none; }
+
+/* Thank-you slide: real page content (so the button is clickable) made to match the card images.
+   Sizes use cqw, a share of the slide's width, so it scales the same way the canvas cards do. */
+.thanks { container-type: inline-size; aspect-ratio: 9 / 16; background: #1d1c1a; border-radius: 14px; box-shadow: 0 10px 30px rgba(0, 0, 0, .18); display: flex; cursor: default; }
+.thanks-paper {
+  flex: 1;
+  margin: 15.7cqw 9.3cqw;
+  padding: 0 6.5cqw;
+  background: #fffdf7;
+  color: #1d1c1a;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3.2cqw;
+  text-align: center;
+  /* the same torn zig-zag as the cards, top and bottom */
+  --tooth: 3.7cqw;
+  -webkit-mask: conic-gradient(from 135deg at top, #0000, #000 1deg 89deg, #0000 90deg) top / var(--tooth) 51% repeat-x, conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom / var(--tooth) 51% repeat-x;
+          mask: conic-gradient(from 135deg at top, #0000, #000 1deg 89deg, #0000 90deg) top / var(--tooth) 51% repeat-x, conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom / var(--tooth) 51% repeat-x;
+}
+.thanks-paper p { margin: 0; }
+.thanks-brand { font: 700 4.1cqw var(--mono); letter-spacing: .18em; text-transform: uppercase; }
+.thanks-title { font: 700 3.4cqw var(--mono); letter-spacing: .1em; text-transform: uppercase; color: #d6452f; }
+.thanks .kofi-icon { width: 22cqw; height: 22cqw; margin: 2cqw 0; }
+.thanks-ask { font: 700 5.6cqw/1.25 var(--sans); }
+.thanks-small { font: 400 3.5cqw/1.35 var(--sans); color: #77736a; }
+.tip-btn { display: inline-block; margin: 1.5cqw 0; padding: 3cqw 6cqw; border-radius: 999px; background: #d6452f; color: #fff; font: 600 4.2cqw var(--sans); text-decoration: none; }
+
+/* Small Support button: bottom-right corner, final receipt only. */
+.tip-pill {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 5;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 11px 4px 5px;
+  border-radius: 999px;
+  border: 1px solid var(--muted);
+  background: var(--bg);
+  color: var(--ink);
+  font: 600 12px var(--sans);
+  text-decoration: none;
+}
+.tip-pill:hover { border-color: var(--accent); }
+.tip-pill .kofi-icon { width: 20px; height: 20px; }
+#cards { padding-bottom: 40px; } /* room to scroll clear of the Support button */
+
+/* Front page: the safety notes, kept in plain sight above the steps. */
+.safe { margin: 0 0 16px; padding: 10px 14px; border: 1px solid var(--muted); border-radius: 12px; font-size: 14px; }
+.safe p { margin: 0; }
+.safe b { color: var(--ink); }
+.safe details { display: inline; color: var(--muted); }
+.safe details + details { margin-left: 14px; }
+.safe summary { display: inline; cursor: pointer; color: var(--ink); text-decoration: underline; list-style: none; }
+.safe summary::-webkit-details-marker { display: none; }
+.safe > p + details { display: inline-block; margin-top: 6px; }
+.safe details[open] { display: block; margin: 6px 0 0; }
+.safe details[open] + details { margin-left: 0; }
+.safe details p { margin: 6px 0 0; }
+.safe details a { color: var(--ink); }
+.safe kbd { color: #1d1c1a; }
+
+/* Questions at the bottom of the start screen, in the same style as the safety notes. */
+.faq { margin: 0 0 24px; font-size: 15px; }
+.faq h2 { margin: 0 0 8px; font-size: 19px; }
+.faq details { padding: 10px 0; border-bottom: 1px dashed var(--muted); }
+.faq summary { cursor: pointer; font-weight: 600; }
+.faq details p { margin: 8px 0 0; color: var(--muted); }
+.faq details a { color: var(--ink); }
+
+/* Check screen: the last step before the reveal, so the button gets the spotlight. */
+.reveal { text-align: center; margin: 26px 0 6px; }
+.reveal .tease { font-size: 18px; font-weight: 600; margin: 0 0 14px; }
+.reveal button.primary { font-size: 19px; padding: 16px 34px; box-shadow: 0 10px 30px color-mix(in srgb, var(--accent) 35%, transparent); }
+.reveal .text-btn { display: block; margin: 14px auto 0; color: var(--muted); font-size: 14px; }
+
+
+/* Guide page (how-much-have-i-spent-on-steam.html): long-form text on the same receipts. */
+a.brand { text-decoration: none; }
+.guide h1 { margin-top: 8px; }
+.toc { display: flex; flex-direction: column; gap: 6px; margin: 0 0 24px; padding: 12px 16px; border-left: 3px solid var(--accent); font-size: 15px; }
+.toc a { color: var(--ink); }
+.guide .receipt ol, .guide .receipt ul { margin: 8px 0; padding-left: 22px; }
+.guide .receipt li { margin: 4px 0; }
+.guide .note { color: var(--paper-muted); font-size: 15px; border-top: 1px dashed var(--rule); padding-top: 10px; margin-top: 14px; }
+.guide kbd { font: 700 13px var(--mono); background: #fff; border: 1px solid var(--rule); border-bottom-width: 3px; border-radius: 5px; padding: 1px 6px; }
+.reasons dt { font-weight: 700; margin-top: 12px; }
+.reasons dd { margin: 2px 0 0; }
+.receipt a.cta { display: inline-block; margin-top: 6px; padding: 14px 26px; background: var(--accent); color: var(--accent-ink); border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 17px; box-shadow: 0 8px 24px color-mix(in srgb, var(--accent) 30%, transparent); }
+.receipt a.cta:hover { filter: brightness(1.06); }

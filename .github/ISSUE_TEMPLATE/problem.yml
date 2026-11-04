@@ -1,0 +1,39 @@
+name: Something's not working
+description: Tell us what went wrong on steamdamage.com
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for letting us know.
+
+        **Please don't paste your Steam purchase history here.** This page is public. A description is plenty, or a screenshot with your amounts and game names covered.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What did you expect, and what did you get instead?
+    validations:
+      required: true
+  - type: dropdown
+    id: where
+    attributes:
+      label: Where did it go wrong?
+      options:
+        - Pasting my history
+        - The screen after pasting
+        - The cards
+        - Saving or copying a card
+        - Somewhere else
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and device
+      placeholder: e.g. Chrome on Windows, Firefox on Mac
+  - type: input
+    id: currency
+    attributes:
+      label: Your Steam wallet currency
+      placeholder: e.g. USD, EUR, GBP

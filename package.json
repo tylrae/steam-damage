@@ -1,0 +1,10 @@
+{
+  "name": "steam-damage",
+  "private": true,
+  "description": "Client-side Steam spending recap. No dependencies, no build step.",
+  "scripts": {
+    "test": "node --test \"tests/*.test.js\"",
+    "check": "node tests/check-fixture.js",
+    "rates": "node tools/build-rates.js"
+  }
+}
