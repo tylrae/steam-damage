@@ -1,0 +1,29 @@
+name: Ideas and feedback
+description: Suggest a card, a better joke, or anything that would make steamdamage.com better
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time. Anything goes: card ideas, jokes that missed, bits that were confusing, or things you liked.
+
+        **Please don't paste your Steam purchase history here.** This page is public. If a screenshot helps, cover your amounts and game names first.
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What's it about?
+      options:
+        - An idea for a new card
+        - A joke or line on a card
+        - Something that was confusing
+        - Something I liked
+        - Something else
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: Tell us more
+      description: The more specific, the easier it is to act on.
+    validations:
+      required: true
