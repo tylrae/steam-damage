@@ -283,8 +283,13 @@
     if (conv && conv.converted.length) {
       issues.push([`Everything shown in ${conv.target}`, `Purchases made in ${conv.converted.join(', ')} were converted at the average exchange rate for the year you made them. Change currency at the top right.`]);
     }
-    if (conv && conv.unconverted.length) {
-      issues.push(['Some amounts couldn\'t be converted', `There are no exchange rates for ${conv.unconverted.join(', ')}, so those amounts are shown separately.`]);
+    // "?" is money whose currency symbol wasn't recognised: say that plainly, and keep it out of the rates line.
+    const noRate = conv ? conv.unconverted.filter(c => c !== '?') : [];
+    if (noRate.length) {
+      issues.push(['Some amounts couldn\'t be converted', `There are no exchange rates for ${noRate.join(', ')}, so those amounts are shown separately.`]);
+    }
+    if ('?' in s.totals.net) {
+      issues.push(['We didn\'t recognise your currency', 'Some amounts use a currency symbol we don\'t know yet, so they show with a "?" and can\'t be converted. Please use "Report a problem" at the bottom of the page and tell us your Steam currency, so we can add it.']);
     }
     const unknown = parsed.warnings.find(w => w.code === 'unknown-rows');
     if (unknown) issues.push(['A few rows were skipped', unknown.message]);

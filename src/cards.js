@@ -132,8 +132,10 @@
     const rows = [['Games & DLC', bag(minus(s.totals.spend, s.totals.inGame))]];
     if (has(s.totals.inGame)) rows.push(['Microtransactions', bag(s.totals.inGame)]);
     if (has(s.totals.refunds)) rows.push(['Refunded', bag(negate(s.totals.refunds))]);
-    // Nothing is nothing in any currency, so Zero Damage needs no exchange rate.
-    const lifetime = netTotal < 0.005 ? ZERO_DAMAGE : LIFETIME_BADGES.find(t => toUsd(netTotal, cur, rates) >= t.usd);
+    // Nothing is nothing in any currency, so Zero Damage needs no exchange rate. But it has to be nothing in
+    // every currency: money we couldn't convert (or name) leaves the display total at 0 without being zero.
+    const allZero = Object.values(s.totals.net).every(v => v < 0.005);
+    const lifetime = netTotal < 0.005 ? (allZero ? ZERO_DAMAGE : null) : LIFETIME_BADGES.find(t => toUsd(netTotal, cur, rates) >= t.usd);
     if (lifetime) earned.push({ area: 'Lifetime', badge: lifetime.badge });
     cards.push({ id: 'total', badge: lifetime && lifetime.badge, blocks: [
       { type: 'kicker', text: 'The damage' },

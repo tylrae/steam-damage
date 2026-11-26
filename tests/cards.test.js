@@ -92,6 +92,13 @@ test('a history refunded to nothing gets Zero Damage, with or without an exchang
   }
 });
 
+test('money in a currency we cannot show is not Zero Damage', () => {
+  const s = summary([game('Alpha', 0, 1)]);
+  s.totals = { spend: { '?': 88589.83 }, inGame: {}, refunds: {}, net: { '?': 88589.83 } };
+  const cards = K.build(s, { rates: { years: { 2026: { USD: 1, AUD: 1.5 } } } });
+  assert.notStrictEqual(cards[0].badge, 'Zero Damage');
+});
+
 test('a Market-only history says so instead of "on 0 games"', () => {
   const s = summary([]);
   s.totals = { spend: {}, inGame: {}, refunds: {}, net: {} };

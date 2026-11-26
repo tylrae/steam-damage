@@ -21,6 +21,9 @@ test('amounts', () => {
   // Other Steam currencies, in the formats Steam shows them
   assert.deepEqual(a('RM12.90'), { value: 12.9, currency: 'MYR', sign: 0 });
   assert.deepEqual(a('-RM 1,234.50'), { value: 1234.5, currency: 'MYR', sign: -1 });
+  assert.deepEqual(a('P1,299.00'), { value: 1299, currency: 'PHP', sign: 0 });
+  assert.deepEqual(a('-P 649.95'), { value: 649.95, currency: 'PHP', sign: -1 });
+  assert.deepEqual(a('₱1,299.00'), { value: 1299, currency: 'PHP', sign: 0 });
   assert.deepEqual(a('Rp 150 000'), { value: 150000, currency: 'IDR', sign: 0 });
   assert.deepEqual(a('150.000₫'), { value: 150000, currency: 'VND', sign: 0 });
   assert.deepEqual(a('₡12.500'), { value: 12500, currency: 'CRC', sign: 0 });

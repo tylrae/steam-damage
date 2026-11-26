@@ -113,6 +113,10 @@
 
   function detectCurrency(s) {
     for (const [mark, code] of CURRENCY_MARKERS) if (s.includes(mark)) return code;
+    // Pesos can show as a plain "P" ("P1,299.00") or the code ("PHP", "Php"). A lone letter is too
+    // common to search for anywhere, so a bare "P" only counts right before a number, or at the very
+    // end of the text in front of one ("-P" in "-P1,299.00"), and never inside a word ("Pack", "SP").
+    if (/(?:^|[^A-Za-z])(?:PHP|Php)(?![A-Za-z])|(?:^|[^A-Za-z])P\s?(?=\d|$)/.test(s)) return 'PHP';
     return null;
   }
 
