@@ -12,7 +12,7 @@
   const RATE_YEARS = Object.keys(SteamRates.years).sort();
   const CURRENCIES = Object.keys(SteamRates.years[RATE_YEARS[RATE_YEARS.length - 1]]);
   const POPULAR = ['AUD', 'USD', 'EUR', 'GBP', 'CAD', 'NZD', 'JPY'];
-  const REGION_CURRENCY = { AU: 'AUD', US: 'USD', GB: 'GBP', CA: 'CAD', NZ: 'NZD', JP: 'JPY', IE: 'EUR', DE: 'EUR', FR: 'EUR', ES: 'EUR', IT: 'EUR', NL: 'EUR', BE: 'EUR', AT: 'EUR', FI: 'EUR', PT: 'EUR', SG: 'SGD', HK: 'HKD', IN: 'INR', BR: 'BRL', MX: 'MXN', KR: 'KRW', PL: 'PLN', SE: 'SEK', NO: 'NOK', DK: 'DKK', CH: 'CHF', ZA: 'ZAR' };
+  const REGION_CURRENCY = { AU: 'AUD', US: 'USD', GB: 'GBP', CA: 'CAD', NZ: 'NZD', JP: 'JPY', IE: 'EUR', DE: 'EUR', FR: 'EUR', ES: 'EUR', IT: 'EUR', NL: 'EUR', BE: 'EUR', AT: 'EUR', FI: 'EUR', PT: 'EUR', SG: 'SGD', HK: 'HKD', IN: 'INR', BR: 'BRL', MX: 'MXN', KR: 'KRW', PL: 'PLN', SE: 'SEK', NO: 'NOK', DK: 'DKK', CH: 'CHF', ZA: 'ZAR', PH: 'PHP', MY: 'MYR', ID: 'IDR', TH: 'THB', VN: 'VND', TW: 'TWD', CN: 'CNY', IL: 'ILS', KZ: 'KZT', UA: 'UAH', RU: 'RUB', CL: 'CLP', CO: 'COP', PE: 'PEN', UY: 'UYU', CR: 'CRC', SA: 'SAR', AE: 'AED', QA: 'QAR', KW: 'KWD' };
 
   // The visitor's own pick is remembered on this device only (a convenience, not their data).
   const STORE_KEY = 'display-currency';
